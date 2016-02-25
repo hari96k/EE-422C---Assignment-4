@@ -1,12 +1,3 @@
-/*
- WordLadder Solver Class
- Solves EE422C programming assignment #4
- @author Hari (), Kevin Yee (kjy252)
- @version 1.00 2016-02-025
- */
- 
-
-
 package assignment4;
 
 import java.io.BufferedReader;
