@@ -24,7 +24,7 @@ public class Assign4Driver
             // Iterate over and process each line of file
             for (String s = reader.readLine(); s != null; s = reader.readLine()) 
             {
-                Dictionary.add(s);             // output corresponding output
+                Dictionary.add(s);             // add words to dictionary
             }
         } 
         catch (FileNotFoundException e) 
@@ -56,7 +56,7 @@ public class Assign4Driver
             {
                 String[] inputs = new String[2];
                 inputs = s.split("\\s+");							
-                solveLadder(inputs);
+                solveLadder(inputs); //solves each word ladder
             } 
         }
             
@@ -82,8 +82,8 @@ public class Assign4Driver
                 System.err.println ("Error: Incorrect number of command line arguments");
                 System.exit(-1);
             }
-            processDictionary (args[0]);
-            processCommands(args[1]);
+            processDictionary (args[0]);//dictionary in arg 0
+            processCommands(args[1]);//commands in arg 1
 
     }
     
