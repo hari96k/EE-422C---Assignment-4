@@ -11,8 +11,6 @@ package assignment4;
 import java.util.List;
 import java.util.*;
 
-	public static  ArrayList<String> Dictionary = new ArrayList<String>();
-	public static ArrayList<String> SolutionsList = new ArrayList<String>();
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface
 {
