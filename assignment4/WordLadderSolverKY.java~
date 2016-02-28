@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.*;
 
 // do not change class name or interface it implements
-public class WordLadderSolver implements Assignment4Interface
+public class WordLadderSolverKY implements Assignment4Interface
 {
     // delcare class members here.
 
@@ -33,99 +33,95 @@ public class WordLadderSolver implements Assignment4Interface
 		this.eachLetter[4] = start.charAt(4);
 	}
 		
-    
+    // do not change signature of the method implemented from the interface
     @Override
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
-    HashMap<String,Integer> ladder = new HashMap<>(); //ladder from one word to another
-    HashMap<String,ArrayList<String>> graph = new HashMap<>(); //graph of all possibilities
+    HashMap<String,Integer> ladder = new HashMap<>();
+    HashMap<String,ArrayList<String>> graph = new HashMap<>();
     Queue<String> Q = new LinkedList<String>();
     	
     ladder.put(startWord, 1);
     Q.add(startWord);
-    int minSteps = Integer.MAX_VALUE;
+    int min = Integer.MAX_VALUE;
     
     //BFS
     while(!Q.isEmpty()){
     	String word = Q.remove();
-    	setLetter(word); //allows for easier conversions of char
-    	
+    	setLetter(word);
     	if(word == endWord){
-    		minSteps = ladder.get(word); //we've found our word and can exit
-    		break;
+    		min = ladder.get(word);
+    		continue;
     	}
     	
-    	int count = ladder.get(word) + 1; //one step from each previous word. keeps track of duplicates
+    	int dis = ladder.get(word) + 1;
     	
+    	if(dis>min){break;}
     	
     	for(int i =0; i <5; i++){
     		char[] temp = new char[5];
     		temp = Arrays.copyOf(eachLetter, 5);
     		for(char c = 'a'; c <= 'z'; c++)
     		{
-    			/*Iterate through ever possible differOne combos*/
-    			
     			temp[i] = c;
     			String tempString = new String(temp);
-    			if(!getDictionary().contains(tempString)){continue;} //if not in dictionary, ignore
+    			if(!getDictionary().contains(tempString)){continue;}
     			
-    			if(!ladder.containsKey(tempString)){ //if in dictionary, but not in our ladder, put it in.
-    				ladder.put(tempString, count);
+    			if(!ladder.containsKey(tempString)){
+    				ladder.put(tempString, dis);
     				Q.add(tempString);
-    				ArrayList<String> wordGraph = new ArrayList<String>(); 
+    				ArrayList<String> wordGraph = new ArrayList<String>();
     				wordGraph.add(word);
-    				graph.put(tempString, wordGraph); //put in the first word as tempString, wordGraph holds ArrayList of all differ ones
+    				graph.put(tempString, wordGraph);
     				continue;
     			}
     			
-    			if(ladder.get(tempString) < count)continue; //check if word is existing
-    			else if(ladder.get(tempString) == count) //word doesn't exist in arraylist yet, put it in
+    			if(ladder.get(tempString) < dis)continue;
+    			else if(ladder.get(tempString) == dis)
     				graph.get(tempString).add(word);
     		}
     	}
     }
     
-    
-  ArrayList<String> result = new ArrayList<>();
-  
+  ArrayList<String> builder = new ArrayList<>();
   if(!graph.containsKey(endWord)){System.out.println("No path found");
   return SolutionsList;}
     
-    buildResult(endWord, startWord,result,graph);
+    buildResult(endWord, startWord,min-1,builder,graph);
     
-    SolutionsList = result;
+    SolutionsList = builder;
     return SolutionsList;
     }
     
     public boolean found = false;
-   public ArrayList<String> buildResult(String end, String startWord,ArrayList<String> result,HashMap<String,ArrayList<String>>graph){
+   public ArrayList<String> buildResult(String end, String startWord,int step,ArrayList<String> builder,HashMap<String,ArrayList<String>>graph){
         if (end.equals(startWord)){
-            result.add(end);
+            builder.add(end);
             found = true;
-            return result;
+            return builder;
         }
         if(found){
-        	return result;
+        	return builder;
         }
-        result.add(end);
+        builder.add(end);
         if (end.equals(startWord)){
-            result.add(end);
-            return result;
+            builder.add(end);
+            return builder;
         }
         for (String s: graph.get(end)){
         	if (end.equals(startWord)){
                 break;
              }
         	try{
-        	 buildResult(s, startWord,result,graph);
+        	 buildResult(s, startWord,step-1,builder,graph);
         	}
         	catch(NullPointerException e){
-        		SolutionsList = result;
-        		return result;
+        		SolutionsList = builder;
+        		return builder;
         	}
         	 
         }
-        return result;
+        return builder;
     }
         // implement this method
     
@@ -165,4 +161,3 @@ public class WordLadderSolver implements Assignment4Interface
     
     
 }
-
