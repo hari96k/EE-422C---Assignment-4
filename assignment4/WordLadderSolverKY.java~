@@ -14,20 +14,18 @@ import java.util.*;
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface
 {
+    // delcare class members here.
+
 	
 	public static  ArrayList<String> Dictionary = new ArrayList<String>();
 	public static ArrayList<String> SolutionsList = new ArrayList<String>();
 	public static char[] eachLetter = new char[5];
 	
-	/*Function: setLetter
-     * *****************************
-     * Turns start into individual chars to check
-     * @params start
-     * @return void
-     ******************************/ 
+    // add a constructor for this object. HINT: it would be a good idea to set up the dictionary there
 	
-	public void setLetter(String start)
-	{
+
+	
+	public void setLetter(String start){
 		this.eachLetter[0] = start.charAt(0);
 		this.eachLetter[1] = start.charAt(1);
 		this.eachLetter[2] = start.charAt(2);
@@ -35,22 +33,15 @@ public class WordLadderSolver implements Assignment4Interface
 		this.eachLetter[4] = start.charAt(4);
 	}
 		
-	/*Function: computeLadder
-     * *****************************
-     * Find all Paths Using BFS
-     * @params startWord
-     * @params endWord
-     * @return result List
-     ******************************/ 
+    
+    @Override
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
-    	/*If the String is not of length 5 return error*/
-    	if(startWord.length()!= 5 && endWord.length()!= 5)
-    	{
-    		printError(startWord,endWord);
-    		return null;
+    	if(startWord.length()!= 5 && endWord.length()!= 5){
+    		System.out.println("No path found between " + startWord + " and " + endWord);
+    		  System.out.println("**********");
+    		  return null;
     	}
-    	
     HashMap<String,Integer> ladder = new HashMap<>(); //ladder from one word to another
     HashMap<String,ArrayList<String>> graph = new HashMap<>(); //graph of all possibilities
     Queue<String> Q = new LinkedList<String>();
@@ -70,15 +61,18 @@ public class WordLadderSolver implements Assignment4Interface
     		break;
     	}
     	
-    	int count = ladder.get(word) + 1; //one step from each previous word. keeps track of duplicates
-    	if(count>minSteps){break;}
     	
+    	
+    	int count = ladder.get(word) + 1; //one step from each previous word. keeps track of duplicates
+    	
+    	if(count>minSteps){break;}
     	for(int i =0; i <5; i++){
     		char[] temp = new char[5];
     		temp = Arrays.copyOf(eachLetter, 5);
     		for(char c = 'a'; c <= 'z'; c++)
     		{
     			/*Iterate through ever possible differOne combos*/
+    			
     			temp[i] = c;
     			String tempString = new String(temp);
     			if(!getDictionary().contains(tempString)){continue;} //if not in dictionary, ignore
@@ -101,35 +95,24 @@ public class WordLadderSolver implements Assignment4Interface
     
     
   ArrayList<String> result = new ArrayList<>();
+  
   if(!graph.containsKey(endWord))
-  {
-  printError(startWord,endWord);
+  {System.out.println("No path found between " + startWord + " and " + endWord);
+  System.out.println("**********");
   return null;
   }
     
-  buildResult(endWord, startWord,result,graph);
+    buildResult(endWord, startWord,result,graph);
     
-  SolutionsList = result;
-  return SolutionsList;
+    SolutionsList = result;
+    return SolutionsList;
     }
     
+    public boolean found = false;
     
     
-    
-    
-   public boolean found = false;
-	/*Function: buildResult
-    * *****************************
-    * buildResult from BFS using DFS
-    * @params end
-    * @params startWord
-    * @params result
-    * @params graph
-    * @return result List
-    ******************************/ 
-   
-   public ArrayList<String> buildResult(String end, String startWord,ArrayList<String> result,HashMap<String,ArrayList<String>>graph)
-   {
+  
+   public ArrayList<String> buildResult(String end, String startWord,ArrayList<String> result,HashMap<String,ArrayList<String>>graph){
         if (end.equals(startWord)){
             result.add(end);
             found = true;
@@ -178,7 +161,7 @@ public class WordLadderSolver implements Assignment4Interface
          return true;
     }
 
-    
+    // add additional methods here
     
     public boolean diffbyOne(String str1, String str2){
     	
@@ -191,19 +174,8 @@ public class WordLadderSolver implements Assignment4Interface
         }
         return same == str1.length() - 1;
     }
-    
-    
-    
-    
-    public void printError(String startWord, String endWord)
-    {
-    	System.out.println("No path found between " + startWord + " and " + endWord);
-    	System.out.println("**********");
-    	return;
-    }
 
-    
-    
+
 	public static ArrayList<String> getDictionary() {
 		return Dictionary;
 	}

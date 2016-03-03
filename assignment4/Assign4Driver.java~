@@ -13,36 +13,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-
 
 public class Assign4Driver
 {
 	
-	 public static void main(String[] args) throws Exception
-	    {
-	            if (args.length != 2)
-	            {
-	                System.err.println ("Error: Incorrect number of command line arguments");
-	                System.exit(-1);
-	            }
-	            processDictionary (args[0]);//dictionary in arg 0
-	            processCommands(args[1]);//commands in arg 1
-
-	    }
-	 
 	public static ArrayList<String> Dictionary = new ArrayList<String>();
 	
-    /*Function: processDictoinary
-     * *****************************
-     * Puts Dictionary into ArrayList
-     *
-     ******************************/ 
 	public static void processDictionary (String filename) throws Exception 
     {
+        Assign4Driver driver = new Assign4Driver();
         try 
         {
             // Read file 
@@ -72,11 +53,6 @@ public class Assign4Driver
         return;
     }
 	
-	/*Function: processCommands
-     * *****************************
-     * Process word pairs to solve
-     *
-     ******************************/ 
 	
 	public static void processCommands (String filename) throws Exception 
     {
@@ -109,56 +85,34 @@ public class Assign4Driver
         }
         return;
     }
-	    
-    
-    /*Function: solveLadder
-     * *****************************
-     * Solves the WordLadder 
-     * @param inputs  Strings to build ladder from
-     * @return void
-     ******************************/  
-    public static void solveLadder(String[] inputs)
+    public static void main(String[] args) throws Exception
     {
+    	
+    	
+            if (args.length != 2)
+            {
+                System.err.println ("Error: Incorrect number of command line arguments");
+                System.exit(-1);
+            }
+            processDictionary (args[0]);//dictionary in arg 0
+            processCommands(args[1]);//commands in arg 1
+
+    }
+    
+    public static void solveLadder(String[] inputs){
+        // Create a word ladder solver object
         Assignment4Interface wordLadderSolver = new WordLadderSolver();
 
         try 
         {
-        	wordLadderSolver.setDictionary(Dictionary); //sets the Dictoinary once before solving
+        	wordLadderSolver.setDictionary(Dictionary);
             List<String> result = wordLadderSolver.computeLadder(inputs[0], inputs[1]);
-            if(result != null){printResult(result);}
-    
-            boolean correct = true;
-            if(result != null){correct = wordLadderSolver.validateResult(inputs[0], inputs[1], result);}
-            if(!correct){System.out.println("Wrong");}
+            boolean correct = wordLadderSolver.validateResult("money", "honey", result);
         } 
         catch (NoSuchLadderException e) 
         {
             e.printStackTrace();
         }
     }
-    
-    /* Function: printResult
-     * ****************************
-     * Prints Item in Results Array
-     * @param result    result of Word Ladder
-     * @return void
-     ******************************/  
-    
-    public static void printResult(List<String> result)
-    {
-    	Collections.reverse(result);
-    	Iterator<String> i = result.iterator();
-        while (i.hasNext())
-        {
-            String temp = i.next();  // grab next item                                                         
-            System.out.println(temp);
-        }
-        
-        System.out.println("**********"); 
-     
-    }
-    
-    
-   
 }
 
