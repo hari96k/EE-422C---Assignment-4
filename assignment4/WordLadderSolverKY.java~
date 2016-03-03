@@ -37,11 +37,6 @@ public class WordLadderSolver implements Assignment4Interface
     @Override
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
-    	if(startWord.length()!= 5 && endWord.length()!= 5){
-    		System.out.println("No path found between " + startWord + " and " + endWord);
-    		  System.out.println("**********");
-    		  return null;
-    	}
     HashMap<String,Integer> ladder = new HashMap<>(); //ladder from one word to another
     HashMap<String,ArrayList<String>> graph = new HashMap<>(); //graph of all possibilities
     Queue<String> Q = new LinkedList<String>();
@@ -55,17 +50,14 @@ public class WordLadderSolver implements Assignment4Interface
     	String word = Q.remove();
     	setLetter(word); //allows for easier conversions of char
     	
-    	if(word == endWord)
-    	{
+    	if(word == endWord){
     		minSteps = ladder.get(word); //we've found our word and can exit
     		break;
     	}
     	
-    	
-    	
     	int count = ladder.get(word) + 1; //one step from each previous word. keeps track of duplicates
     	
-    	if(count>minSteps){break;}
+    	
     	for(int i =0; i <5; i++){
     		char[] temp = new char[5];
     		temp = Arrays.copyOf(eachLetter, 5);
@@ -96,11 +88,8 @@ public class WordLadderSolver implements Assignment4Interface
     
   ArrayList<String> result = new ArrayList<>();
   
-  if(!graph.containsKey(endWord))
-  {System.out.println("No path found between " + startWord + " and " + endWord);
-  System.out.println("**********");
-  return null;
-  }
+  if(!graph.containsKey(endWord)){System.out.println("No path found");
+  return SolutionsList;}
     
     buildResult(endWord, startWord,result,graph);
     
@@ -109,9 +98,6 @@ public class WordLadderSolver implements Assignment4Interface
     }
     
     public boolean found = false;
-    
-    
-  
    public ArrayList<String> buildResult(String end, String startWord,ArrayList<String> result,HashMap<String,ArrayList<String>>graph){
         if (end.equals(startWord)){
             result.add(end);
@@ -148,17 +134,7 @@ public class WordLadderSolver implements Assignment4Interface
     @Override	
     public boolean validateResult(String startWord, String endWord, List<String> wordLadder) 
     {
-        
-        if(!wordLadder.get(0).equals(startWord) && !wordLadder.get(wordLadder.size()-1).equals(endWord)){return false;}
-        
-        int i =0;
-        while(!wordLadder.get(i+1).equals(endWord)){
-        	if(!diffbyOne(wordLadder.get(i),wordLadder.get(i+1))){
-        		return false;
-        	}
-        	i++;
-        }
-         return true;
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     // add additional methods here
