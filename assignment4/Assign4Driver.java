@@ -22,8 +22,8 @@ public class Assign4Driver {
 			System.err.println("Error: Incorrect number of command line arguments");
 			System.exit(-1);
 		}
-		processDictionary(args[0]);					// args[0] contains dictionary			
-		processCommands(args[1]);					// args[1] contains test file
+		processDictionary(args[0]);			
+		processCommands(args[1]);					// args[0] contains test file
 
 	}
 
@@ -75,7 +75,29 @@ public class Assign4Driver {
 			// Iterate over and process each line of file
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
 				String[] inputs = new String[2];
-				inputs = s.split("\\s+");
+				inputs = s.split("[ ]+");
+				// Catches 0 (null/empty line) inputs
+				if(inputs.length == 0){
+					System.out.println("For the input words (null) and (null) :\nAt least one of the words (null) and (null) are not legitimate 5-letter words from the dictionary");
+					continue;
+				}
+				// Catches one word inputs
+				else if (inputs.length == 1 ){
+					System.out.println("For the input words " + inputs[0] + " and (null) :\nAt least one of the words " + inputs[0] + " and (null) are not legitimate 5-letter words from the dictionary");
+						continue;
+					}
+				// Catches two word inputs, where atleast one of them is null/empty
+				else if (inputs.length == 2 && (inputs[0].equals("") || inputs[1].equals(""))){
+					System.out.println("For the input words " + inputs[0] + " and " + inputs[1] + ":\nAt least one of the words " + inputs[0] + " and " + inputs[1] + " are not legitimate 5-letter words from the dictionary");
+						continue;
+					}
+				// Catches more than two word inputs
+				else if (inputs.length > 2 ){
+					System.out.println("For the input with words " + inputs[0] + " and " + inputs[1] + ":\nThe input is invalid (there are too many input arguments)");
+						continue;
+					}
+				
+				
 				solveLadder(inputs); // solves each word ladder
 			}
 		}
@@ -109,6 +131,7 @@ public class Assign4Driver {
 		try {
 			String startWord = inputs[0].toLowerCase();
 			String endWord = inputs[1].toLowerCase();
+			
 			if (!WordLadderSolver.getDictionary().contains(startWord) || !WordLadderSolver.getDictionary().contains(endWord)){
 				System.out.println("For the input words " + startWord + " and " +endWord + ":\nAt least one of the words " + startWord + " and " + endWord + " are not legitimate 5-letter words from the dictionary");
 				return;
