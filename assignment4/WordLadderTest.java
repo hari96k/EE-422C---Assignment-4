@@ -1,3 +1,10 @@
+/*
+ WordLaderTest Class
+ Solves EE422C programming assignment #4
+ @author Hari (), Kevin Yee (kjy252)
+ @version 1.00 2016-02-025
+ */
+
 package assignment4;
 
 import static org.junit.Assert.*;
@@ -13,39 +20,10 @@ import org.junit.Test;
 public class WordLadderTest {
 
 	
-	@Test
-	public void test1() throws NoSuchLadderException 
-		{
-		Assignment4Interface wordLadderSolver = new WordLadderSolver();
-		
-		List<String> result = wordLadderSolver.computeLadder("angel","devil");
-		
-		assertNull(result);
-	
-	    }
-	
-	@Test
-	public void test() throws NoSuchLadderException 
-	{
-	 ArrayList<String> Dictionary = new ArrayList<String>();
-	 Dictionary.add("heads");
-	 Dictionary.add("heals");
-	 Dictionary.add("veals");
-	 Dictionary.add("veils");
-	 Dictionary.add("vails");
-	 Dictionary.add("tails");
-	Assignment4Interface wordLadderSolver = new WordLadderSolver();
-	wordLadderSolver.setDictionary(Dictionary);
-	List<String> result = wordLadderSolver.computeLadder("heads","tails");
-	Collections.reverse(result);
-	boolean correct = wordLadderSolver.validateResult("heads","tails",result);
-	assertTrue(correct);
 
-    }
 	
 	   
 		
 	}
-
 
 

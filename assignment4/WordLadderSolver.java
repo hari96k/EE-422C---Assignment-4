@@ -13,42 +13,23 @@ import java.util.*;
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface {
 
-	private static ArrayList<String> Dictionary = new ArrayList<String>();
+	private ArrayList<String> dictionary = new ArrayList<String>();
 	private static ArrayList<String> SolutionsList = new ArrayList<String>();
 	private static char[] eachLetter = new char[5];
 
 	/*
-	 * Function: setLetter ***************************** Turns start into
-	 * individual chars to check
-	 * 
-	 * @params start
-	 * 
-	 * @return void
-	 ******************************/
-
-	private void setLetter(String start) {
-		eachLetter[0] = start.charAt(0);
-		eachLetter[1] = start.charAt(1);
-		eachLetter[2] = start.charAt(2);
-		eachLetter[3] = start.charAt(3);
-		eachLetter[4] = start.charAt(4);
-	}
-
-	/*
-	 * Function: computeLadder ***************************** Find all Paths
-	 * Using BFS
-	 * 
+	 * Function: computeLadder 
+	 * *****************************
+	 *Checks if there's an obvious path
 	 * @params startWord
-	 * 
 	 * @params endWord
-	 * 
 	 * @return result List
 	 ******************************/
-	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException {
-
-		/* If the String is not of length 5 return error */
-		if (startWord.length() != 5 && endWord.length() != 5) {
-			printError(startWord, endWord);
+	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException
+	{
+		
+		if(baseCheck(startWord,endWord))
+		{
 			return null;
 		}
 
@@ -57,35 +38,44 @@ public class WordLadderSolver implements Assignment4Interface {
 			SolutionsList.add(startWord);
 			return SolutionsList;
 		}
-
+		return searchWord(startWord,endWord);
+	}
+	
+	
+	/*
+	 * Function: searchWord
+	 * *****************************
+	 * Find all Paths Using BFS
+	 * @params startWord
+	 * @params endWord
+	 * @return result List
+	 ******************************/
+	 public List<String> searchWord (String startWord,String endWord){
 		HashMap<String, Integer> ladder = new HashMap<>(); // ladder from one word to another
 		HashMap<String, ArrayList<String>> graph = new HashMap<>(); // graph of all possibilities
 		Queue<String> Q = new LinkedList<String>();
-
 		ladder.put(startWord, 1);
 		Q.add(startWord);
-
 		// BFS
 		while (!Q.isEmpty()) {
 			String word = Q.remove();
 			setLetter(word); // allows for easier conversions of char
 
 			if (word.equals(endWord)) {
-				// minSteps = ladder.get(word); //we've found our word and can exit
+			 //we've found our word and can exit
 				break;
 			}
 
 			int count = ladder.get(word) + 1; // one step from each previous word. keeps track of duplicates
-			// if(count>minSteps){break;}
-
+			String tempString = new String();
 			for (int i = 0; i < 5; i++) {
 				char[] temp = new char[5];
 				temp = Arrays.copyOf(eachLetter, 5);
 				for (char c = 'a'; c <= 'z'; c++) {
 					/* Iterate through ever possible differOne combos */
 					temp[i] = c;
-					String tempString = new String(temp);
-					if (!Dictionary.contains(tempString)) {
+					tempString = String.copyValueOf(temp);
+					if (!dictionary.contains(tempString)) {
 						continue;
 					} // if not in dictionary, ignore
 
@@ -106,8 +96,11 @@ public class WordLadderSolver implements Assignment4Interface {
 			}
 		}
 
+		//create our result
 		ArrayList<String> result = new ArrayList<>();
+		
 		if (!graph.containsKey(endWord)) {
+			//if not in the graph return null
 			printError(startWord, endWord);
 			return null;
 		}
@@ -117,20 +110,39 @@ public class WordLadderSolver implements Assignment4Interface {
 		SolutionsList = result;
 		return SolutionsList;
 	}
-
+	/*
+	 * Fuction:baseCheck
+	 * *******************************
+	 * checks if base case met
+	 ********************************/
+	
+	private boolean baseCheck(String startWord, String endWord)
+	{
+		if(startWord == null || endWord == null){
+			return true;
+		}
+		/* If the String is not of length 5 return error */
+		if (startWord.length() != 5 && endWord.length() != 5) {
+			printError(startWord, endWord);
+			return true;
+		}
+		if(!dictionary.contains(startWord) || !dictionary.contains(endWord)){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	public boolean found = false;
 	/*
-	 * Function: buildResult ***************************** buildResult from BFS
-	 * using DFS
-	 * 
+	 * Function: buildResult 
+	 * ***************************** 
+	 * buildResult from BFS using DFS
 	 * @params end
-	 * 
 	 * @params startWord
-	 * 
 	 * @params result
-	 * 
 	 * @params graph
-	 * 
 	 * @return result List
 	 ******************************/
 
@@ -163,7 +175,31 @@ public class WordLadderSolver implements Assignment4Interface {
 		}
 		return result;
 	}
-	// implement this method
+	
+	/*
+	 * Function: setLetter
+	 *  *****************************
+	 *  Turns start into individual chars to check
+	 * @params start
+	 * @return void
+	 ******************************/
+	private void setLetter(String start) {
+		eachLetter[0] = start.charAt(0);
+		eachLetter[1] = start.charAt(1);
+		eachLetter[2] = start.charAt(2);
+		eachLetter[3] = start.charAt(3);
+		eachLetter[4] = start.charAt(4);
+	}
+
+
+
+	/*
+	 * Function: validateResult
+	 * ***************************** 
+	 * validates that the solution is correct
+	 * @params endword
+	 * @params startWord
+	 ******************************/
 
 	@Override
 	public boolean validateResult(String startWord, String endWord, List<String> wordLadder) {
@@ -182,6 +218,15 @@ public class WordLadderSolver implements Assignment4Interface {
 		return true;
 	}
 
+	
+	/*
+	 * Function: diffbyOne
+	 * ***************************** 
+	 * determines is the strings diff by one
+	 * @params str1
+	 * @params str2
+	 ******************************/
+	
 	private boolean diffbyOne(String str1, String str2) {
 
 		if (str1.length() != str2.length())
@@ -194,18 +239,26 @@ public class WordLadderSolver implements Assignment4Interface {
 		return same == str1.length() - 1;
 	}
 
+	/*
+	 * Function: printError
+	 * ***************************** 
+	 * prints Error if string is incorrect
+	 * @params startWord
+	 * @params endWord
+	 ******************************/	
+
 	private void printError(String startWord, String endWord) {
 		System.out.println("No path found between " + startWord + " and " + endWord);
 		System.out.println("**********");
 		return;
 	}
 
-	public static ArrayList<String> getDictionary() {
-		return Dictionary;
+	public ArrayList<String> getDictionary() {
+		return this.dictionary;
 	}
 
 	public void setDictionary(ArrayList<String> dictionary) {
-		Dictionary = dictionary;
+		this.dictionary = dictionary;
 	}
 
 }
