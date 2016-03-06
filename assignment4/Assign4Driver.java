@@ -43,10 +43,7 @@ public class Assign4Driver {
 			// Iterate over and process each line of file
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
 				if (!s.startsWith("*")) {
-					WordLadderSolver.getDictionary().add(s.substring(0, 5)); // add
-																				// words
-																				// to
-																				// dictionary
+					WordLadderSolver.getDictionary().add(s.substring(0, 5)); // add words to dictionary
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -78,12 +75,11 @@ public class Assign4Driver {
 
 			// Iterate over and process each line of file
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-				String[] inputs = new String[2];
+				String[] inputs;
 				inputs = s.split("[ ]+");
 				// Catches 0 (null/empty line) inputs
 				if (inputs.length == 0) {
-					System.out.println(
-							"For the input words (null) and (null) :\nAt least one of the words (null) and (null) are not legitimate 5-letter words from the dictionary");
+					System.out.println("For the input words (null) and (null) :\nAt least one of the words (null) and (null) are not legitimate 5-letter words from the dictionary");
 					System.out.println("**********");
 					continue;
 				}
@@ -130,6 +126,7 @@ public class Assign4Driver {
 		}
 		return;
 	}
+	
 
 	/* Function: solveLadder 
 	 * 		Solves the WordLadder
@@ -159,18 +156,11 @@ public class Assign4Driver {
 			List<String> result = wordLadderSolver.computeLadder(startWord, endWord);
 
 			// If result is not null/empty, a ladder was successfully computed
-			if (result != null) {
+			// Also checks validity of the non-empty result
+			if (result != null && wordLadderSolver.validateResult(inputs[0], inputs[1], result)) {
 				printResult(result);
 			}
 
-			boolean correct = true;
-			// Validate the non-empty result
-			if (result != null) {
-				correct = wordLadderSolver.validateResult(inputs[0], inputs[1], result);
-			}
-			if (!correct) {
-				System.out.println("Wrong");
-			}
 		} catch (NoSuchLadderException e) {
 			e.printStackTrace();
 		}
