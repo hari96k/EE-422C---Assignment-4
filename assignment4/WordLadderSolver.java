@@ -48,7 +48,7 @@ public class WordLadderSolver implements Assignment4Interface {
 
 		
 		/* If the String is not of length 5 return error */
-		if (startWord.length() != 5 && endWord.length() != 5) {
+		if (startWord.length() != 5 || endWord.length() != 5) {
 			printError(startWord, endWord);
 			return null;
 		}
@@ -203,7 +203,8 @@ public class WordLadderSolver implements Assignment4Interface {
 	}
 
 	private void printError(String startWord, String endWord) {
-		System.out.println("No path found between " + startWord + " and " + endWord);
+		
+		System.out.println("For the input words " + startWord + " and " + endWord + ":\nThere is no word ladder between " + startWord + " and " + endWord + "!");
 		System.out.println("**********");
 		return;
 	}
