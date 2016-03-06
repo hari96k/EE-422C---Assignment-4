@@ -1,3 +1,10 @@
+/*
+ NosuchLadderException
+ Solves EE422C programming assignment #4
+ @author Hari (hk8663), Kevin Yee (kjy252)
+ @version 1.01 2016-03-03
+ */
+
 package assignment4;
 
 public class NoSuchLadderException extends Exception

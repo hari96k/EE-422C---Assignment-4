@@ -18,11 +18,10 @@ public class WordLadderSolver implements Assignment4Interface {
 	private static char[] eachLetter = new char[5];
 
 	/*
-	 * Function: setLetter ***************************** Turns start into
-	 * individual chars to check
-	 * 
+	 * Function: setLetter 
+	 * -------------------------------
+	 * Turns start into individual chars to check
 	 * @params start
-	 * 
 	 * @return void
 	 ******************************/
 
@@ -35,37 +34,29 @@ public class WordLadderSolver implements Assignment4Interface {
 	}
 
 	/*
-	 * Function: computeLadder ***************************** Find all Paths
-	 * Using BFS
-	 * 
-	 * @params startWord
-	 * 
+	 * Function: computeLadder
+	 * --------------------------- 
+	 * Find all Path Using BFS
+	 * @params startWors
 	 * @params endWord
-	 * 
 	 * @return result List
 	 ******************************/
 	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException {
-
 		
 		/* If the String is not of length 5 return error */
-		if (startWord.length() != 5 || endWord.length() != 5) {
+		if ((startWord.length() != 5 || endWord.length() != 5) ||
+			(!Dictionary.contains(startWord) || !Dictionary.contains(endWord))) {
 			printError(startWord, endWord);
 			return null;
 		}
 		
-
-		if (diffbyOne(startWord, endWord)) {
+		if (diffbyOne(startWord, endWord) || startWord.equals(endWord)) {
+			SolutionsList.clear();
 			SolutionsList.add(endWord);
 			SolutionsList.add(startWord);
 			return SolutionsList;
 		}
 		
-		if (startWord.equals(endWord)) {
-			SolutionsList.add(endWord);
-			SolutionsList.add(startWord);
-			return SolutionsList;
-		}
-
 		HashMap<String, Integer> ladder = new HashMap<>(); // ladder from one word to another
 		HashMap<String, ArrayList<String>> graph = new HashMap<>(); // graph of all possibilities
 		Queue<String> Q = new LinkedList<String>();
@@ -77,15 +68,10 @@ public class WordLadderSolver implements Assignment4Interface {
 		while (!Q.isEmpty()) {
 			String word = Q.remove();
 			setLetter(word); // allows for easier conversions of char
-
 			if (word.equals(endWord)) {
-				// minSteps = ladder.get(word); //we've found our word and can exit
-				break;
+				break; //found our word exit
 			}
-
 			int count = ladder.get(word) + 1; // one step from each previous word. keeps track of duplicates
-			// if(count>minSteps){break;}
-
 			for (int i = 0; i < 5; i++) {
 				char[] temp = new char[5];
 				temp = Arrays.copyOf(eachLetter, 5);
@@ -96,7 +82,6 @@ public class WordLadderSolver implements Assignment4Interface {
 					if (!Dictionary.contains(tempString)) {
 						continue;
 					} // if not in dictionary, ignore
-
 					if (!ladder.containsKey(tempString)) { // if in dictionary, but not in our ladder, put it in.
 						ladder.put(tempString, count);
 						Q.add(tempString);
@@ -105,7 +90,6 @@ public class WordLadderSolver implements Assignment4Interface {
 						graph.put(tempString, wordGraph); // put in the first word as tempString, wordGraph holds ArrayList of all differ ones
 						continue;
 					}
-
 					if (ladder.get(tempString) < count)
 						continue; // check if word is existing
 					else if (ladder.get(tempString) == count) // word doesn't exist in arraylist yet, put it in
@@ -119,26 +103,23 @@ public class WordLadderSolver implements Assignment4Interface {
 			printError(startWord, endWord);
 			return null;
 		}
-
-		buildResult(endWord, startWord, result, graph);
+		buildResult(endWord, startWord, result, graph); //use DFS to build our result
 
 		SolutionsList = result;
 		return SolutionsList;
 	}
 
+	
+	
 	public boolean found = false;
 	/*
-	 * Function: buildResult ***************************** buildResult from BFS
-	 * using DFS
-	 * 
+	 * Function: buildResult 
+	 * ----------------------------------------
+	 *  buildResult using DFS
 	 * @params end
-	 * 
 	 * @params startWord
-	 * 
 	 * @params result
-	 * 
 	 * @params graph
-	 * 
 	 * @return result List
 	 ******************************/
 
@@ -153,10 +134,6 @@ public class WordLadderSolver implements Assignment4Interface {
 			return result;
 		}
 		result.add(end);
-		if (end.equals(startWord)) {
-			result.add(end);
-			return result;
-		}
 		for (String s : graph.get(end)) {
 			if (end.equals(startWord)) {
 				break;
@@ -173,15 +150,22 @@ public class WordLadderSolver implements Assignment4Interface {
 	}
 	// implement this method
 
+	/*
+	 * Function: validateResult
+	 * ***************************** 
+	 * validates that the solution is correct
+	 * @params endword
+	 * @params startWord
+	 ******************************/
 	@Override
 	public boolean validateResult(String startWord, String endWord, List<String> wordLadder) {
-
-		if (!wordLadder.get(0).equals(startWord) && !wordLadder.get(wordLadder.size() - 1).equals(endWord)) {
+		Collections.reverse(wordLadder);
+		if (!wordLadder.get(0).equals(startWord.toLowerCase()) && !wordLadder.get(wordLadder.size() - 1).equals(endWord.toLowerCase())) {
 			return false;
 		}
 
 		int i = 0;
-		while (!wordLadder.get(i + 1).equals(endWord)) {
+		while (!wordLadder.get(i + 1).equals(endWord.toLowerCase())) {
 			if (!diffbyOne(wordLadder.get(i), wordLadder.get(i + 1))) {
 				return false;
 			}
@@ -190,6 +174,13 @@ public class WordLadderSolver implements Assignment4Interface {
 		return true;
 	}
 
+	/*
+	 * Function: diffbyOne
+	 * ***************************** 
+	 * determines is the strings diff by one
+	 * @params str1
+	 * @params str2
+	 ******************************/
 	private boolean diffbyOne(String str1, String str2) {
 
 		if (str1.length() != str2.length())
@@ -202,6 +193,13 @@ public class WordLadderSolver implements Assignment4Interface {
 		return same == str1.length() - 1;
 	}
 
+	/*
+	 * Function: printError
+	 * ***************************** 
+	 * prints Error if string is incorrect
+	 * @params startWord
+	 * @params endWord
+	 ******************************/	
 	private void printError(String startWord, String endWord) {
 		
 		System.out.println("For the input words " + startWord + " and " + endWord + ":\nThere is no word ladder between " + startWord + " and " + endWord + "!");
@@ -209,6 +207,8 @@ public class WordLadderSolver implements Assignment4Interface {
 		return;
 	}
 
+	
+	/*Mutators*/
 	public static ArrayList<String> getDictionary() {
 		return Dictionary;
 	}

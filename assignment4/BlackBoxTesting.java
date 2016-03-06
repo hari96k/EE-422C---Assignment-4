@@ -15,7 +15,7 @@ public class BlackBoxTesting {
 
 	protected void setUp() throws Exception {
 		Dictionary wordDict = new Dictionary();
-		wordDictionary = wordDict.getDictionary("A4-words.txt");
+		wordDictionary = wordDict.getDictionary("src/A4-words.txt");
 
 	}
 
@@ -37,7 +37,6 @@ public class BlackBoxTesting {
 		Assignment4Interface wordLadderSolver = new WordLadderSolver();
 		wordLadderSolver.setDictionary(wordDictionary);
 		List<String> result = wordLadderSolver.computeLadder("heads", "tails");
-		Collections.reverse(result);
 		boolean correct = wordLadderSolver.validateResult("heads", "tails", result);
 		Assign4Driver.printResult(result);
 		assertTrue(correct);

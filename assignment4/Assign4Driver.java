@@ -1,5 +1,5 @@
 /*
- WordLadder Solver Class
+ Assign4Driver
  Solves EE422C programming assignment #4
  @author Hari (hk8663), Kevin Yee (kjy252)
  @version 1.01 2016-03-03
@@ -28,7 +28,9 @@ public class Assign4Driver {
 	}
 
 	/*
-	 * Function: processDictoinary Puts Dictionary into ArrayList
+	 * Function: processDictoinary 
+	 * ------------------------------------
+	 * Puts Dictionary into ArrayList
 	 */
 	public static void processDictionary(String filename) throws Exception {
 		BufferedReader reader = null; // Outside try block to ensure that reader
@@ -61,9 +63,12 @@ public class Assign4Driver {
 		return;
 	}
 
-	/*
-	 * Function: processCommands Process word pairs to solve
-	 */
+	/**
+	 * Function: processCommands
+	 * ------------------------------
+	 *  Process word pairs to solve
+	 *  @params filename
+	 ***********************************/
 
 	public static void processCommands(String filename) throws Exception {
 		BufferedReader reader = null; // Outside try block to ensure that reader is closed in the finally block
@@ -129,10 +134,9 @@ public class Assign4Driver {
 	
 
 	/* Function: solveLadder 
-	 * 		Solves the WordLadder
-	 * 
+	 * 	Solves the WordLadder
+	 * --------------------------------
 	 * @param inputs Strings to build ladder from
-	 * 
 	 * @return void
 	 */
 	public static void solveLadder(String[] inputs) {
@@ -167,7 +171,8 @@ public class Assign4Driver {
 	}
 
 	/* Function: printResult 
-	 * 		Prints Item in Results Array
+	 * ------------------------------
+	 * Prints Item in Results Array
 	 * 
 	 * @param result result of Word Ladder
 	 * 
@@ -175,7 +180,6 @@ public class Assign4Driver {
 	 ******************************/
 
 	public static void printResult(List<String> result) {
-		Collections.reverse(result);
 		System.out.println("For the input words " + result.get(0) + " and " + result.get(result.size() - 1)
 				+ ", the following word ladder was found:");
 		Iterator<String> i = result.iterator();
