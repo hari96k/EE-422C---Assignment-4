@@ -29,12 +29,12 @@ public class Dictionary {
 	
 	public  ArrayList<String> getDictionary (String filename) throws Exception 
     {
-	
+		BufferedReader reader;
         try 
         {
             // Read file 
             FileReader freader = new FileReader(filename);
-            BufferedReader reader = new BufferedReader(freader);
+            reader = new BufferedReader(freader);
             
             // Iterate over and process each line of file
             for (String s = reader.readLine(); s != null; s = reader.readLine()) 
